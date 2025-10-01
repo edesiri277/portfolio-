@@ -54,7 +54,7 @@ export default function Hero() {
       </div>
 
       {/* RIGHT: full-height, flush to right edge */}
-      <div className="fixed inset-y-0 right-0 w-1/3 z-0">
+      <div className="fixed inset-y-0 right-0 w-1/3 z-0 hidden md:block">
         <img
           src={rightFace}
           alt="AI Face Right"
