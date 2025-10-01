@@ -4,7 +4,6 @@ import Button from "../ui/Button";
 import { ExternalLink, Mail, Download, Github, Linkedin} from "lucide-react";
 
 // Import the images
-import centerFace from "../asset/_digital__art__illustration_-removebg-preview.png"; 
 import leftFace from "../asset/image (2).png";   
 import rightFace from "../asset/image3 (2).png"; 
 
@@ -36,7 +35,7 @@ export default function Hero() {
 
 
       {/* Left Face */}
-      <div className="fixed inset-y-0 left-0 w-1/3 z-0 ">
+      <div className="fixed inset-y-0 left-0 w-1/3 z-0 hidden md:block">
         <img
           src={leftFace}
           alt="AI Face Left"
