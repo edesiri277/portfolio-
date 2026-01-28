@@ -49,6 +49,8 @@ export default function ProjectsSlider({ items }) {
                       <Button
                         as="a"
                         href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-white text-slate-900 hover:opacity-90"
                       >
                         <ExternalLink className="h-4 w-4" /> Live Demo
@@ -56,6 +58,8 @@ export default function ProjectsSlider({ items }) {
                       <Button
                         as="a"
                         href={p.repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="border border-slate-700 bg-slate-900"
                       >
                         <Github className="h-4 w-4" /> Code

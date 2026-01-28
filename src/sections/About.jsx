@@ -5,6 +5,8 @@ import image2 from "../asset/css2.png";
 import image3 from "../asset/js.png";
 import image4 from "../asset/react.png";
 import image5 from "../asset/tailwind.png";
+import image6 from "../asset/Me.jpeg";
+import image7 from "../asset/node.png";
 
 
 export default function About() {
@@ -15,7 +17,7 @@ export default function About() {
         <div className="relative mx-auto w-full max-w-[420px] overflow-hidden rounded-3xl shadow-lg ring-1 ring-slate-800">
           <img
             alt="Profile"
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1600&auto=format&fit=crop"
+            src={image6}
             className="h-full w-full object-cover"
           />
         </div>
@@ -66,6 +68,10 @@ export default function About() {
                   <div className="flex items-center">
                     <img src={image5} alt="Tailwind" className="w-[65px] h-[65px] object-cover" />
                     <h3 className="text-lg font-semibold text-gray-300">TAILWIND</h3>
+                  </div>
+                  <div className="flex items-center">
+                    <img src={image7} alt="Node" className="w-[70px] h-[70px] object-cover" />
+                    <h3 className="text-lg font-semibold text-gray-300">NODE.JS</h3>
                   </div>
                 </div>
               </div>

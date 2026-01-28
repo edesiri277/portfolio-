@@ -5,6 +5,14 @@ import Button from "../ui/Button";
 import { User, Phone, Mail, FileText, MessageSquare, Github, Linkedin } from "lucide-react";
 
 
+export default function ContactSection() {
+
+  const [popup, setPopup] = React.useState({
+  show: false,
+  success: true,
+  message: "",
+});
+
 const sendEmail = (e) => {
   e.preventDefault();
 
@@ -14,20 +22,27 @@ const sendEmail = (e) => {
     e.target,              // form data
     "hnDSCU2BQ7v2aaMaa"      // from EmailJS dashboard
   ).then(
-    (result) => {
-      console.log(result.text);
-      alert("✅ Message sent successfully!");
-      e.target.reset(); // clear form
+    () => {
+      setPopup({
+        show: true,
+        success: true,
+        message: "Your message has been sent successfully!",
+      });
+      e.target.reset();
     },
-    (error) => {
-      console.log(error.text);
-      alert("❌ Something went wrong. Try again!");
+    () => {
+      setPopup({
+        show: true,
+        success: false,
+        message: "Oops! Something went wrong. Please try again.",
+      });
     }
   );
+  setTimeout(() => {
+    setPopup((prev) => ({ ...prev, show: false }));
+  }, 7000);
 };
 
-
-export default function ContactSection() {
   return (
     <Section id="contact">
     <section className="py-6">
@@ -160,7 +175,7 @@ export default function ContactSection() {
                 <MessageSquare className="text-white w-5 h-5 mt-1" />
                 <textarea
                  name="message" 
-                  placeholder="How can we help you? Feel free to get in touch!"
+                  placeholder="How can I help you? Feel free to get in touch!"
                   required
                   className="w-full outline-none bg-transparent resize-none text-gray-100 placeholder-gray-400"
                   rows={3}
@@ -178,6 +193,34 @@ export default function ContactSection() {
           </form>
         </div>
       </div>
+
+              {/* POPUP (outside form is best) */}
+        {popup.show && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setPopup({ ...popup, show: false })}
+            />
+
+            <div
+              className={`relative z-10 w-[90%] max-w-md p-6 rounded-xl shadow-lg
+              ${popup.success ? "bg-emerald-600" : "bg-red-600"}
+              text-white animate-scaleIn`}
+            >
+              <h3 className="text-xl font-bold mb-2">
+                {popup.success ? "Success 🎉" : "Error ❌"}
+              </h3>
+              <p className="mb-4">{popup.message}</p>
+
+              <button
+                onClick={() => setPopup({ ...popup, show: false })}
+                className="px-4 py-2 bg-white text-black rounded-md font-semibold"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
     </section>
     </Section>
   );

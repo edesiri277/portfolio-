@@ -88,7 +88,7 @@ export default function Hero() {
           <Button className="border border-slate-700 bg-slate-900 hover:bg-slate-800" as="a" href="#contact">
             <Mail className="h-4 w-4" /> Contact Me
           </Button>
-          <Button className="border border-slate-700 bg-slate-900 hover:bg-slate-800" as="a" href="/public/Ecv .pdf" download>
+          <Button className="border border-slate-700 bg-slate-900 hover:bg-slate-800" as="a" href="/Front-end-developer.pdf" download>
             <Download className="h-4 w-4" /> Download CV
           </Button>
         </div>
