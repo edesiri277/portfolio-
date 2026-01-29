@@ -5,16 +5,69 @@ import { User, Phone, Mail, FileText, MessageSquare, Github, Linkedin } from "lu
 
 
 export default function ContactSection() {
+    const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
   const [popup, setPopup] = useState({
   show: false,
   success: true,
   message: "",
 });
 
+const [errors, setErrors] = useState({});
 const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    // Clear error when user starts typing
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: "" });
+    }
+  };
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!isValidEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = "Subject is required";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
 const sendEmail = (e) => {
   e.preventDefault();
+  if (!validateForm()) return;
+
   setLoading(true);
 
   emailjs.sendForm(     
@@ -29,8 +82,14 @@ const sendEmail = (e) => {
         success: true,
         message: "Your message has been sent successfully!",
       });
-      e.target.reset();
-  })
+      setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      })
     .catch(() => {
       setPopup({
         show: true,
@@ -126,11 +185,13 @@ const sendEmail = (e) => {
                 <input
                   type="text"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="Name"
-                  required
                   className="w-full outline-none bg-transparent text-gray-100 placeholder-gray-400"
                 />
               </label>
+                {errors.name && (<p className="text-red-400 text-sm mt-1">{errors.name}</p>)}
             </div>
 
             {/* Phone */}
@@ -140,10 +201,13 @@ const sendEmail = (e) => {
                 <input
                   type="text"
                   name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   placeholder="Phone"
                   className="w-full outline-none bg-transparent text-gray-100 placeholder-gray-400"
                 />
               </label>
+              {errors.phone && (<p className="text-red-400 text-sm mt-1">{errors.phone}</p>)}
             </div>
 
             {/* Email */}
@@ -152,12 +216,14 @@ const sendEmail = (e) => {
                 <Mail className="text-white w-5 h-5" />
                 <input
                   type="email"
-                   name="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Email Address"
-                   required
                   className="w-full outline-none bg-transparent text-gray-100 placeholder-gray-400"
                 />
               </label>
+               {errors.email && (<p className="text-red-400 text-sm mt-1">{errors.email}</p>)}
             </div>
 
             {/* Subject */}
@@ -167,10 +233,13 @@ const sendEmail = (e) => {
                 <input
                   type="text"
                   name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
                   placeholder="Subject"
                   className="w-full outline-none bg-transparent text-gray-100 placeholder-gray-400"
                 />
               </label>
+              {errors.subject && (<p className="text-red-400 text-sm mt-1">{errors.subject}</p>)}
             </div>
 
             {/* Message */}
@@ -179,12 +248,14 @@ const sendEmail = (e) => {
                 <MessageSquare className="text-white w-5 h-5 mt-1" />
                 <textarea
                  name="message" 
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="How can I help you? Feel free to get in touch!"
-                  required
                   className="w-full outline-none bg-transparent resize-none text-gray-100 placeholder-gray-400"
                   rows={3}
                 ></textarea>
               </label>
+              {errors.message && (<p className="text-red-400 text-sm mt-1">{errors.message}</p>)}
             </div>
 
             {/* Button */}
