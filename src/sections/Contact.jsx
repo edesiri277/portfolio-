@@ -1,26 +1,27 @@
-import React from "react";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 import Section from "../ui/Section";
-import Button from "../ui/Button";
+import { useState } from "react";
 import { User, Phone, Mail, FileText, MessageSquare, Github, Linkedin } from "lucide-react";
 
 
 export default function ContactSection() {
-
-  const [popup, setPopup] = React.useState({
+  const [popup, setPopup] = useState({
   show: false,
   success: true,
   message: "",
 });
 
+const [loading, setLoading] = useState(false);
+
 const sendEmail = (e) => {
   e.preventDefault();
+  setLoading(true);
 
-  emailjs.sendForm(
-    "service_udoq632",     // from EmailJS dashboard
-    "template_xgb8y58",    // from EmailJS dashboard
+  emailjs.sendForm(     
+    import.meta.env.VITE_EMAILJS_SERVICE_ID,  // from EmailJS dashboard
+    import.meta.env.VITE_EMAILJS_TEMPLATE_ID,   // from EmailJS dashboard
     e.target,              // form data
-    "hnDSCU2BQ7v2aaMaa"      // from EmailJS dashboard
+    import.meta.env.VITE_EMAILJS_PUBLIC_KEY      // from EmailJS dashboard
   ).then(
     () => {
       setPopup({
@@ -29,18 +30,21 @@ const sendEmail = (e) => {
         message: "Your message has been sent successfully!",
       });
       e.target.reset();
-    },
-    () => {
+  })
+    .catch(() => {
       setPopup({
         show: true,
         success: false,
         message: "Oops! Something went wrong. Please try again.",
       });
-    }
-  );
-  setTimeout(() => {
-    setPopup((prev) => ({ ...prev, show: false }));
-  }, 7000);
+    })
+    .finally(() => {
+      setLoading(false);
+    
+     setTimeout(() => {
+      setPopup((prev) => ({ ...prev, show: false }));
+    }, 7000);
+  });
 };
 
   return (
@@ -114,7 +118,7 @@ const sendEmail = (e) => {
 
         {/* Right Side */}
         <div className="bg-gray-900 p-8 rounded-lg shadow-md z-10">
-          <form className="space-y-12" onSubmit={sendEmail}>
+          <form className="space-y-12" onSubmit={sendEmail} noValidate>
             {/* Name */}
             <div className="">
               <label className="flex items-center gap-2 border-b border-gray-700 pb-2">
@@ -186,9 +190,10 @@ const sendEmail = (e) => {
             {/* Button */}
             <button
               type="submit"
-              className="w-full bg-[linear-gradient(135deg,rgba(173,0,255,0.4)_20%,rgba(0,150,255,0.35)_50%,rgba(255,0,150,0.35)_80%)] text-white font-semibold py-3 rounded-md"
+              disabled={loading}
+              className={`relative z-20 w-full bg-[linear-gradient(135deg,rgba(173,0,255,0.4)_20%,rgba(0,150,255,0.35)_50%,rgba(255,0,150,0.35)_80%)] text-white font-semibold py-3 rounded-md ${loading && "opacity-50 cursor-not-allowed"}`}
             >
-              Get in Touch
+              {loading ? "Sending..." : "Get in Touch"}
             </button>
           </form>
         </div>
