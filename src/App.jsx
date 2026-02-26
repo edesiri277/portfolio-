@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import BackToTop from "./layout/BackToTop";
-import Preloader from "./layout/Preloader";
+// import Preloader from "./layout/Preloader";
 
 // Sections
 import Hero from "./sections/Hero";
@@ -21,10 +21,10 @@ export default function PortfolioSite() {
   const canvasRef = useRef(null);
 
   // ===== Preloader Timer =====
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoading(false), 1500);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const navItems = [
     { id: "home", label: "Home" },
@@ -124,7 +124,7 @@ export default function PortfolioSite() {
   }, [loading]);
 
   // ===== Preloader First =====
-  if (loading) return <Preloader />;
+  // if (loading) return <Preloader />;
 
   return (
     <div className="min-h-screen relative bg-[#0d0221] text-slate-100">
