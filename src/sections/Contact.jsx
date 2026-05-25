@@ -1,4 +1,4 @@
-import emailjs from "@emailjs/browser";
+
 import Section from "../ui/Section";
 import { useState } from "react";
 import { User, Phone, Mail, FileText, MessageSquare, Github, Linkedin } from "lucide-react";
@@ -64,46 +64,49 @@ const [loading, setLoading] = useState(false);
     return Object.keys(newErrors).length === 0;
   };
 
-const sendEmail = (e) => {
+const sendEmail = async (e) => {
   e.preventDefault();
   if (!validateForm()) return;
 
   setLoading(true);
 
-  emailjs.sendForm(     
-    import.meta.env.VITE_EMAILJS_SERVICE_ID,  // from EmailJS dashboard
-    import.meta.env.VITE_EMAILJS_TEMPLATE_ID,   // from EmailJS dashboard
-    e.target,              // form data
-    import.meta.env.VITE_EMAILJS_PUBLIC_KEY      // from EmailJS dashboard
-  ).then(
-    () => {
+  try {
+    const response = await fetch('http://localhost:5000/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
       setPopup({
         show: true,
         success: true,
         message: "Your message has been sent successfully!",
       });
       setFormData({
-          name: "",
-          phone: "",
-          email: "",
-          subject: "",
-          message: "",
-        });
-      })
-    .catch(() => {
-      setPopup({
-        show: true,
-        success: false,
-        message: "Oops! Something went wrong. Please try again.",
+        name: "",
+        phone: "",
+        email: "",
+        subject: "",
+        message: "",
       });
-    })
-    .finally(() => {
-      setLoading(false);
-    
-     setTimeout(() => {
+    } else {
+      throw new Error('Something went wrong.');
+    }
+  } catch (error) {
+    setPopup({
+      show: true,
+      success: false,
+      message: "Oops! Something went wrong. Please try again.",
+    });
+  } finally {
+    setLoading(false);
+    setTimeout(() => {
       setPopup((prev) => ({ ...prev, show: false }));
     }, 7000);
-  });
+  }
 };
 
   return (

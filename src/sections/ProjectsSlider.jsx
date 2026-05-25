@@ -20,7 +20,9 @@ export default function ProjectsSlider({ items }) {
   return (
     <Section id="projects" eyebrow="Work" title="Featured projects">
       <div className="relative">
-      <h2 className="text-3xl text-center pb-10 font-bold sm:text-4xl">My Projects</h2>
+        <h2 className="text-3xl text-center pb-10 font-bold sm:text-4xl">
+          My Projects
+        </h2>
         <div className="overflow-hidden rounded-3xl border border-slate-950 shadow-sm">
           <div
             className="flex transition-transform duration-500"
@@ -32,9 +34,7 @@ export default function ProjectsSlider({ items }) {
                   {/* Text content */}
                   <div className="order-2 lg:order-1">
                     <h3 className="text-2xl font-bold">{p.title}</h3>
-                    <p className="mt-2 text-slate-300">
-                      {p.desc}
-                    </p>
+                    <p className="mt-2 text-slate-300">{p.desc}</p>
                     <div className="mt-4 flex flex-wrap gap-2">
                       {p.tech.map((t) => (
                         <span
@@ -74,6 +74,7 @@ export default function ProjectsSlider({ items }) {
                         src={p.img}
                         alt={p.title}
                         className="h-full w-full object-cover"
+                        loading="lazy"
                       />
                     </div>
                   </div>
@@ -99,9 +100,7 @@ export default function ProjectsSlider({ items }) {
                 key={i}
                 onClick={() => setIndex(i)}
                 className={`h-2 w-6 rounded-full transition ${
-                  index === i
-                    ? "bg-white"
-                    : "bg-slate-700"
+                  index === i ? "bg-white" : "bg-slate-700"
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />
