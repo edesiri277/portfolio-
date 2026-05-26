@@ -21,6 +21,7 @@ app.post('/send', async (req, res) => {
 
         const msg = {
             to: process.env.EMAIL, // 👈 where YOU receive messages
+            name: "Edesiri Portfolio",
             from: process.env.EMAIL, // 👈 MUST be your verified sender
             replyTo: email, // 👈 user email (so you can reply directly)
             subject: `New message from ${name}: ${subject}`,
