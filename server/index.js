@@ -2,47 +2,48 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
-import nodemailer from 'nodemailer';
+import sgMail from "@sendgrid/mail";
 import cors from 'cors';
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 app.use(cors({
   origin: 'https://edesirii.vercel.app'
 }));
 app.use(express.json());
 
-app.post('/send', (req, res) => {
-    const { name, phone, email, subject, message } = req.body;
+app.post('/send', async (req, res) => {
+    try {
+        const { name, phone, email, subject, message } = req.body;
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASS,
-    },
-});
+        const msg = {
+            to: process.env.EMAIL, // 👈 where YOU receive messages
+            from: process.env.EMAIL, // 👈 MUST be your verified sender
+            replyTo: email, // 👈 user email (so you can reply directly)
+            subject: `New message from ${name}: ${subject}`,
+            text: `Name: ${name}
+Phone: ${phone}
+Email: ${email}
 
-    const mailOptions = {
-        from: process.env.EMAIL,
-        replyTo: email,
-        to: process.env.EMAIL,
-        subject: `New message from ${name}: ${subject}`,
-        text: `Name: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nMessage: ${message}`
-    };
+Message:
+${message}`,
+        };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        console.log("EMAIL ERROR:", error); // 👈 clearer log
-        return res.status(500).json({ error: error.message });
-    } else {
-        console.log('Email sent: ' + info.response);
-        return res.status(200).json({ message: 'Email sent successfully.' });
+        await sgMail.send(msg);
+
+        console.log("Email sent successfully");
+
+        res.status(200).json({ message: "Email sent successfully" });
+
+    } catch (error) {
+        console.error("EMAIL ERROR:", error.response?.body || error);
+        res.status(500).json({ error: "Failed to send email" });
     }
-   });
 });
 
 app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
 });
