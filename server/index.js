@@ -18,8 +18,8 @@ app.post('/send', (req, res) => {
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // IMPORTANT: false for port 587
+    port: 465,
+    secure: true, // IMPORTANT: false for port 587
     auth: {
         user: process.env.EMAIL,
         pass: process.env.EMAIL_PASS
@@ -38,14 +38,14 @@ const transporter = nodemailer.createTransport({
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            res.status(500).send('Something went wrong.');
-        } else {
-            console.log('Email sent: ' + info.response);
-            res.status(200).send('Email sent successfully.');
-        }
-    });
+    if (error) {
+        console.log("EMAIL ERROR:", error); // 👈 clearer log
+        return res.status(500).json({ error: error.message });
+    } else {
+        console.log('Email sent: ' + info.response);
+        return res.status(200).json({ message: 'Email sent successfully.' });
+    }
+   });
 });
 
 app.listen(port, () => {
