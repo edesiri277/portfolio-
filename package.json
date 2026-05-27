@@ -4,20 +4,17 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"node server/index.js\"",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postbuild": "react-snap"
   },
   "dependencies": {
-    "@sendgrid/mail": "^8.1.6",
-    "concurrently": "^9.2.1",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
+    "@emailjs/browser": "^4.4.1",
     "lucide-react": "^0.542.0",
-    "nodemailer": "^8.0.8",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-snap": "^1.23.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
@@ -25,5 +22,10 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
     "vite": "^5.4.8"
+  },
+
+  "reactSnap": {
+  "inlineCss": true,
+  "puppeteerArgs": ["--no-sandbox"]
   }
 }
